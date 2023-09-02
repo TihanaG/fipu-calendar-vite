@@ -25,20 +25,20 @@ router.get('/admin/edit-vacation-request/:id', [
     getVacationRequest,
 ])
 
-/*
 router.patch('/admin/edit-vacation-request/:id', [
     authorizePermissions('admin'),
     // validateVacationRequestInput,
     validateVacationIdParam,
     updateVacationRequest,
 ])
-*/
 
+/*
 router.post('/admin/edit-vacation-request/:id', [
     authorizePermissions('admin'),
     validateVacationIdParam,
     createVacationEventsForSelectedDates,
 ])
+*/
 
 router.post('/admin/create-events-for-selected-dates', [
     authorizePermissions('admin'),

@@ -126,6 +126,8 @@ const EventTrackerController = () => {
       <CalendarMenu
         findDaysWithoutEvents={findDaysWithoutEvents}
         isSubmitting={isSubmitting}
+        month={currentMonthMoment.format("MM")}
+        year={currentMonthMoment.format("YYYY")}
       />
       <Modal
         shouldShow={showNewEventModal}

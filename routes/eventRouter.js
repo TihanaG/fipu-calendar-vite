@@ -9,6 +9,7 @@ import {
     deleteEvent,
     showReports,
     createEvents,
+    deleteEventsForSelectedMonth,
 } from '../controllers/eventController.js'
 import { validateEventInput, validateIdParam } from '../middleware/validationMiddleware.js'
 import { checkForTestUser } from '../middleware/authMiddleware.js'
@@ -24,5 +25,9 @@ router
     .get(validateIdParam, getEvent)
     .patch(checkForTestUser, validateEventInput, validateIdParam, updateEvent)
     .delete(checkForTestUser, validateIdParam, deleteEvent)
+
+router
+    .route('/:year/:month')
+    .delete(checkForTestUser, deleteEventsForSelectedMonth)
 
 export default router

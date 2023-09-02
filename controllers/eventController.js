@@ -103,6 +103,31 @@ export const deleteEvent = async (req, res) => {
     res.status(StatusCodes.OK).json({ msg: 'event deleted', event: removedEvent })
 }
 
+export const deleteEventsForSelectedMonth = async (req, res) => {
+    const { month, year } = req.params;
+
+    // Calculate the start and end dates of the selected month
+    const startDate = new Date(year, month - 1, 1); // month is 0-based
+    const endDate = new Date(year, month, 1); // Start of next month
+    
+
+    try {
+        // Delete events that fall within the selected month
+        const removedEvents = await Event.deleteMany({
+            eventDate: { $gte: startDate, $lte: endDate },
+        });
+
+        res
+            .status(StatusCodes.OK)
+            .json({ msg: "Events deleted for the selected month", removedEvents });
+    } catch (error) {
+        console.error(error);
+        res
+            .status(StatusCodes.INTERNAL_SERVER_ERROR)
+            .json({ error: "An error occurred" });
+    }
+};
+
 export const showReports = async (req, res) => {
     console.log("Raw query parameters:", req.query);
     const { month, year } = req.query;

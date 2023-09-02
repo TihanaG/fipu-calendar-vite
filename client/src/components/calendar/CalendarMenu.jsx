@@ -10,6 +10,7 @@ import { RiFileExcel2Line } from "react-icons/ri";
 import { Modal } from "./Modal";
 import { useState } from "react";
 import FillAllForm from "./FillAllForm";
+import { Form } from "react-router-dom";
 
 const CalendarMenuContainer = styled.div`
   display: flex;
@@ -50,10 +51,23 @@ const CalendarMenuContainer = styled.div`
   }
 `;
 
+const ModalContainer = styled.div`
+  p {
+    margin: 1rem 0;
+  }
+`;
+
+const ConfirmButtonContainer = styled.div`
+  display: flex;
+  gap: 0.5rem;
+`;
+
 export const CalendarMenu = ({
   fillAll,
   findDaysWithoutEvents,
   isSubmitting,
+  month,
+  year,
 }) => {
   // console.log("CalendarMenu rendering");
   const [showNewEventModal, setShowNewEventModal] = useState(false);
@@ -93,11 +107,32 @@ export const CalendarMenu = ({
             handleSubmit={handleSubmit}
           />
         ) : (
-          <div>
-            <p>Are you sure you want to delete all events?</p>
-            <button onClick={handleDeleteConfirm}>Yes, delete all</button>
-            <button onClick={() => setShowDeleteModal(false)}>Cancel</button>
-          </div>
+          <ModalContainer>
+            <p>Are you sure you want to delete all events in selected month?</p>
+            <ConfirmButtonContainer>
+              <Form
+                method="post"
+                action={`delete-events/${year}/${month}`}
+                onSubmit={handleDeleteConfirm}
+              >
+                <button
+                  type="submit"
+                  className="btn"
+                  name="intent"
+                  value="delete-all"
+                >
+                  Yes, delete all
+                </button>
+              </Form>
+              <button
+                type="button"
+                className="btn"
+                onClick={() => setShowDeleteModal(false)}
+              >
+                Cancel
+              </button>
+            </ConfirmButtonContainer>
+          </ModalContainer>
         )}
       </Modal>
       <CalendarMenuContainer>

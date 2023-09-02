@@ -14,9 +14,17 @@ export const action = async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   try {
-    await customFetch.post("/auth/login", data);
+    const response = await customFetch.post("/auth/login", data);
     toast.success("Login successful");
-    return redirect("/dashboard");
+    const userData = response.data;
+    console.log("My data", userData);
+    if (userData.role === "admin") {
+      // Redirect to the admin dashboard if the user is an admin
+      return redirect("/dashboard/monthly-report");
+    } else {
+      // Redirect to the regular user dashboard if the user is not an admin
+      return redirect("/dashboard");
+    }
   } catch (error) {
     toast.error(error?.response?.data?.msg);
     console.log(error);
@@ -50,8 +58,8 @@ const Login = () => {
       <Form method="post" className="form">
         <Logo />
         <h4>Login</h4>
-        <FormRow type="email" name="email" defaultValue="tihana@gmail.com" />
-        <FormRow type="password" name="password" defaultValue="secret123" />
+        <FormRow type="email" name="email" />
+        <FormRow type="password" name="password" />
         <button type="submit" className="btn btn-block" disabled={isSubmitting}>
           {isSubmitting ? "submiting..." : "submit"}
         </button>

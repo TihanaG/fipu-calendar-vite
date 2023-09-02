@@ -62,7 +62,7 @@ const Admin = () => {
     const newMonthMoment = moment(currentMonthMoment).add(1, "months");
     // Update the URL with the new month and year
     navigate(
-      `/dashboard/admin?month=${newMonthMoment.format(
+      `/dashboard/monthly-report?month=${newMonthMoment.format(
         "MM"
       )}&year=${newMonthMoment.format("YYYY")}`
     );
@@ -73,7 +73,7 @@ const Admin = () => {
     setCurrentMonthMoment(newMonthMoment);
     // Update the URL with the new month and year
     navigate(
-      `/dashboard/admin?month=${newMonthMoment.format(
+      `/dashboard/monthly-report?month=${newMonthMoment.format(
         "MM"
       )}&year=${newMonthMoment.format("YYYY")}`
     );
@@ -83,7 +83,7 @@ const Admin = () => {
     setCurrentMonthMoment(today);
     // Update the URL with today's month and year
     navigate(
-      `/dashboard/admin?month=${today.format("MM")}&year=${today.format(
+      `/dashboard/monthly-report?month=${today.format("MM")}&year=${today.format(
         "YYYY"
       )}`
     );
@@ -124,7 +124,7 @@ const Admin = () => {
             <tbody>
               {userReports.map((person, index) => (
                 <tr key={person._id}>
-                  <td className="name-cell">{person.name}</td>
+                  <td className="name-cell">{person.name} {person.lastName}</td>
                   {daysInMonth.map((date) => {
                     const userEvent = person.userEvents.find((event) =>
                       moment(event.eventDate).isSame(date, "day")

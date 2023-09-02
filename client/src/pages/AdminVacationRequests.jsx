@@ -10,13 +10,22 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import AllVacationRequestsContainer from "../components/AllVacationRequestsContainer";
 import { createContext, useContext } from "react";
+import { SearchContainer } from "../components";
 
-export const loader = async () => {
+export const loader = async ({ request }) => {
+  console.log("hello");
+  const params = Object.fromEntries([
+    ...new URL(request.url).searchParams.entries(),
+  ]);
+  console.log(params);
   try {
     const { data } = await customFetch.get(
-      "/users/admin/all-vacation-requests"
+      "/users/admin/all-vacation-requests",
+      {
+        params,
+      }
     );
-    return { data };
+    return { data, searchValues: { ...params } };
   } catch (error) {
     toast.error("You are not authorized to view this page");
     return redirect("/dashboard");
@@ -25,16 +34,17 @@ export const loader = async () => {
 
 const AllVacationRequestsContext = createContext();
 const AdminVacationRequests = () => {
-  const { data } = useLoaderData();
+  const { data, searchValues } = useLoaderData();
   console.log(data);
   return (
-    <AllVacationRequestsContext.Provider value={{ data }}>
-      <h4>All Vacation Requests</h4>
+    <AllVacationRequestsContext.Provider value={{ data, searchValues }}>
+      <SearchContainer />
       <AllVacationRequestsContainer />
     </AllVacationRequestsContext.Provider>
   );
 };
 
-export const useAllVacationRequestsContext = () => useContext(AllVacationRequestsContext);
+export const useAllVacationRequestsContext = () =>
+  useContext(AllVacationRequestsContext);
 
 export default AdminVacationRequests;

@@ -11,19 +11,50 @@ export const getCurrentUser = async (req, res) => {
 };
 
 export const getAllVacationRequests = async (req, res) => {
+  console.log(req.query);
   const users = await User.countDocuments();
   const events = await Event.countDocuments();
   const vacationRequest = await VacationRequest.countDocuments();
 
+  const { search, vacationRequestStatus } = req.query
+
+  const queryObject = {
+    // createdBy: req.user.userId,
+    // vacationRequestStatus
+  }
+
+  if (search) {
+    // queryObject.vacationRequestStatus = req.query.search
+    queryObject.$or = [
+      //{ vacationRequestStatus: { $regex: search } },
+      { createdBy: { $in: await searchUsersByNameOrLastName(search) } },
+    ]
+  }
+
+  if (vacationRequestStatus && vacationRequestStatus !== 'all') {
+    queryObject.vacationRequestStatus = vacationRequestStatus
+  }
+
   try {
-    const vacationRequests = await VacationRequest.find().populate('createdBy', 'name lastName')
-    res.status(StatusCodes.OK).json({ vacationRequests });
+    const vacationRequests = await VacationRequest.find(queryObject).sort('-createdAt').populate('createdBy', 'name lastName')
+
+    const totalVacationRequests = await VacationRequest.countDocuments(queryObject);
+
+    res.status(StatusCodes.OK).json({ totalVacationRequests, vacationRequests });
   } catch (error) {
     console.error(error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: "An error occurred" });
   }
+}
+
+async function searchUsersByNameOrLastName(search) {
+  const regex = new RegExp(search, "i"); // Case-insensitive search
+  const users = await User.find({
+    $or: [{ name: regex }, { lastName: regex }],
+  }).select("_id");
+  return users.map((user) => user._id);
 }
 
 export const getApplicationReports = async (req, res) => {
@@ -83,7 +114,9 @@ export const getApplicationReports = async (req, res) => {
       {
         $project: {
           name: 1,
+          lastName: 1,
           email: 1,
+          role: 1,
           userEvents: {
             $map: {
               input: "$userEvents",
@@ -98,8 +131,16 @@ export const getApplicationReports = async (req, res) => {
         },
       },
       {
-        $sort: { name: 1 }, // Sort by name in ascending order
+        $match: {
+          role: { $ne: "admin" } // Filter out documents where the role is not "admin"
+        }
       },
+      {
+        $sort: {
+          lastName: 1,  // Sort by lastName in ascending order
+          name: 1       // Sort by name in ascending order
+        }
+      }
     ]);
 
     res.status(StatusCodes.OK).json({ users, events, userReports });

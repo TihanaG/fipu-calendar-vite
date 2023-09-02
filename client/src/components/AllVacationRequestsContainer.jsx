@@ -4,16 +4,19 @@ import Wrapper from "../assets/wrappers/AllVacationRequestsContainer";
 
 const AllVacationRequestsContainer = () => {
   const { data } = useAllVacationRequestsContext();
-  const { vacationRequests } = data;
+  const { vacationRequests, totalVacationRequests } = data;
   if (vacationRequests.length === 0) {
     return (
       <Wrapper>
-        <h2>No vacation requests to display...</h2>
+        <h3>No vacation requests to display...</h3>
       </Wrapper>
     );
   }
   return (
     <Wrapper>
+      <h5>
+        {totalVacationRequests} vacation request{vacationRequests.length > 1 && 's'} found
+      </h5>
       <div className="requests">
         {vacationRequests.map((vacationRequest) => {
           return (

@@ -1,7 +1,14 @@
-import { Outlet, redirect, useLoaderData, useNavigate } from "react-router-dom";
+import {
+  Outlet,
+  redirect,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
 import Wrapper from "../assets/wrappers/Dashboard";
-import { BigSidebar, Navbar, SmallSidebar } from "../components";
-import { createContext, useContext, useState } from "react";
+import { BigSidebar, Loading, Navbar, SmallSidebar } from "../components";
+import { createContext, useContext, useEffect, useState } from "react";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 
@@ -19,7 +26,10 @@ const DashboardContext = createContext();
 const DashboardLayout = () => {
   const { user } = useLoaderData();
   const navigate = useNavigate();
+  const navigation = useNavigation();
+  const isPageLoading = navigation.state === "loading";
   const [showSidebar, setShowSidebar] = useState(false);
+  const location = useLocation();
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -30,6 +40,15 @@ const DashboardLayout = () => {
     await customFetch.get("/auth/logout");
     toast.success("Logging out...");
   };
+
+  /*
+  useEffect(() => {
+    // Check if the user is an admin and redirect accordingly
+    if (user && user.role === "admin") {
+      navigate("/dashboard/admin");
+    }
+  }, []);
+  */
 
   return (
     <DashboardContext.Provider
@@ -42,7 +61,12 @@ const DashboardLayout = () => {
           <div>
             <Navbar />
             <div className="dashboard-page">
-              <Outlet context={{ user }} />
+              {isPageLoading &&
+              location.pathname === "/dashboard/vacation-requests" ? (
+                <Loading />
+              ) : (
+                <Outlet context={{ user }} />
+              )}
             </div>
           </div>
         </main>

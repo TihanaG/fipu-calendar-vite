@@ -23,9 +23,9 @@ const FillAllForm = ({ daysWithoutEvents, handleSubmit, isSubmitting }) => {
   return (
     <Wrapper>
       <Form method="post" onSubmit={handleSubmit}>
-        <h4 className="title">Add Events</h4>
+        <h4 className="title">Fill in the remaining days</h4>
         <input
-          type="text"
+          type="hidden"
           name="daysWithoutEvents"
           value={formattedEventDates}
           readOnly

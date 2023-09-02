@@ -7,3 +7,5 @@ export { default as Navbar } from './Navbar';
 export { default as ReportItem } from './ReportItem';
 export { default as ReportsContainer } from './ReportsContainer';
 export { default as AllVacationRequestContainer } from './AllVacationRequestsContainer';
+export { default as SearchContainer } from './SearchContainer';
+export { default as Loading } from './Loading';

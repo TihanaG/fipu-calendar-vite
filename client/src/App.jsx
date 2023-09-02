@@ -14,6 +14,7 @@ import {
   VacationRequest,
   AdminVacationRequests,
   EditVacationRequest,
+  MyRequests,
 } from "./pages";
 
 import { action as registerAction } from "./pages/Register";
@@ -28,6 +29,7 @@ import { action as addVacationRequestAction } from "./pages/VacationRequest";
 import { loader as adminVacationRequestsLoader } from "./pages/AdminVacationRequests";
 import { loader as editVacationRequestsLoader } from "./pages/EditVacationRequest";
 import { action as editVacationRequestsAction } from "./pages/EditVacationRequest";
+import { action as deleteEventsAction } from "./pages/DeleteEvents";
 
 const router = createBrowserRouter([
   {
@@ -76,12 +78,17 @@ const router = createBrowserRouter([
             action: addVacationRequestAction,
           },
           {
-            path: "admin",
+            path: "my-requests",
+            element: <MyRequests />,
+            // loader: addMyRequestsLoader,
+          },
+          {
+            path: "monthly-report",
             element: <Admin />,
             loader: adminLoader,
           },
           {
-            path: "all-vacation-requests",
+            path: "vacation-requests",
             element: <AdminVacationRequests />,
             loader: adminVacationRequestsLoader,
           },
@@ -90,6 +97,10 @@ const router = createBrowserRouter([
             element: <EditVacationRequest />,
             loader: editVacationRequestsLoader,
             action: editVacationRequestsAction,
+          },
+          {
+            path: "delete-events/:year/:month",
+            action: deleteEventsAction,
           },
         ],
       },

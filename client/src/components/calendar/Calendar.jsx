@@ -14,6 +14,32 @@ const CalendarControlsWrap = styled.div`
   align-items: center;
   margin-bottom: 20px;
 
+  h4 {
+    width: 5rem;
+  }
+  @media (min-width: 840px) {
+    h4 {
+      width: 6rem;
+    }
+  }
+  @media (min-width: 900px) {
+    h4 {
+      width: 8rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    h4 {
+      width: 14rem;
+    }
+  }
+
+  .btn-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
   .add-events {
     display: flex;
     align-items: end;
@@ -192,11 +218,13 @@ export const Calendar = ({
                 ? currentMonthMoment.format("MMM YYYY")
                 : currentMonthMoment.format("MMMM YYYY")}
             </h4>
-            <FaChevronLeft className="left" onClick={onPrev} />
-            <FaChevronRight className="right" onClick={onNext} />
-            <button className="today-btn" onClick={setToday}>
-              Today
-            </button>
+            <div className="btn-container">
+              <FaChevronLeft className="left" onClick={onPrev} />
+              <FaChevronRight className="right" onClick={onNext} />
+              <button className="today-btn" onClick={setToday}>
+                Today
+              </button>
+            </div>
           </CalendarControls>
         </CalendarControlsWrap>
 

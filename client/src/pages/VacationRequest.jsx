@@ -98,6 +98,10 @@ const VacationRequest = () => {
     }
   };
 
+  const handleDescriptionChange = (event) => {
+    setVacationRequestDescription(event.target.value);
+  };
+
   const clearAll = () => {
     setSelectedStartDate(null);
     setSelectedEndDate(null);
@@ -163,15 +167,22 @@ const VacationRequest = () => {
               />
             </div>
             <h5>
-              From: {selectedStartDate && selectedStartDate.format("MMM Do, YYYY")}
+              From:{" "}
+              {selectedStartDate && selectedStartDate.format("MMM Do, YYYY")}
             </h5>
             <h5>
               To: {selectedEndDate && selectedEndDate.format("MMM Do, YYYY")}
             </h5>
-            <label htmlFor="vacationRequestDescription">Reason for taking vacation (optional)</label>
-            <textarea name="vacationRequestDescription" />
+            <label htmlFor="vacationRequestDescription">
+              Reason for taking vacation (optional)
+            </label>
+            <textarea
+              name="vacationRequestDescription"
+              value={vacationRequestDescription}
+              onChange={handleDescriptionChange}
+            />
             <div className="btn-container">
-              <button className="btn" onClick={clearAll}>
+              <button type="button" className="btn" onClick={clearAll}>
                 Clear
               </button>
               <button type="submit" className="btn" disabled={isSubmitting}>
