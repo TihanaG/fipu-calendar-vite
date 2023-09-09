@@ -40,7 +40,7 @@ app.post('/', (req, res) => {
     res.json({ message: 'data received', data: req.body })
 })
 
-app.use('/api/v1/vacationRequest', authenticateUser, vacationRequestRouter)
+app.use('/api/v1/vacation-requests', authenticateUser, vacationRequestRouter)
 app.use('/api/v1/events', authenticateUser, eventRouter)
 app.use('/api/v1/users', authenticateUser, userRouter)
 app.use('/api/v1/auth', authRouter)

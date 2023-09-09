@@ -19,9 +19,9 @@ export const action = async ({ request }) => {
   const data = Object.fromEntries(formData);
   console.log(data);
   try {
-    const response = await customFetch.post("/vacationRequest", data);
+    const response = await customFetch.post("/vacation-requests", data);
     console.log("Server Response:", response);
-    return redirect("/dashboard");
+    return redirect("/dashboard/my-requests");
   } catch (error) {
     toast.error(error?.response?.data?.msg);
     return redirect("/dashboard");

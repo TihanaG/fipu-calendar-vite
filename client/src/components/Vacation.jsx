@@ -17,25 +17,27 @@ const Vacation = ({
   const lastDate = moment(toDate).format("DD.MM.YYYY");
   return (
     <Wrapper>
-      <header>
-        <div className="main-icon">{createdBy.name.charAt(0)}</div>
-        <div className="info">
-          <h5>
-            {createdBy.name} {createdBy.lastName}
-          </h5>
-        </div>
-        <div className="content">
-          <FaCalendarAlt /> {firstDate} - {lastDate}
-        </div>
-        <div className={`status ${vacationRequestStatus}`}>
-          {vacationRequestStatus}
-        </div>
-        <div className="more-btn">
-          <Link to={`../edit-vacation-request/${_id}`}>
-            <FiMoreVertical />
-          </Link>
-        </div>
-      </header>
+      {createdBy.name !== "Test" && (
+        <header>
+          <div className="main-icon">{createdBy.name.charAt(0)}</div>
+          <div className="info">
+            <h5>
+              {createdBy.name} {createdBy.lastName}
+            </h5>
+          </div>
+          <div className="content">
+            <FaCalendarAlt /> {firstDate} - {lastDate}
+          </div>
+          <div className={`status ${vacationRequestStatus}`}>
+            {vacationRequestStatus}
+          </div>
+          <div className="more-btn">
+            <Link to={`../edit-vacation-request/${_id}`}>
+              <FiMoreVertical />
+            </Link>
+          </div>
+        </header>
+      )}
     </Wrapper>
   );
 };
